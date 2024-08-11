@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Filament\User\Widgets;
-use App\Models\WorkValue;
+use App\Models\Workvalue;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 class WorkValuesChart extends ApexChartWidget
@@ -18,7 +18,7 @@ class WorkValuesChart extends ApexChartWidget
     protected function getOptions(): array
     {
         // Fetch data from the database
-        $workValues = WorkValue::with('period')
+        $workValues = Workvalue::with('period')
             ->orderBy('tahun_kinerja')
             ->orderBy('period_id')
             ->get();
