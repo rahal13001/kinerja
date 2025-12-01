@@ -5,6 +5,34 @@
         .chat-content p { margin-bottom: 0.5rem; }
         .chat-content p:last-child { margin-bottom: 0; }
         .chat-content strong { font-weight: 600; }
+
+        .chat-window {
+            position: absolute;
+            bottom: 100%;
+            right: 0;
+            margin-bottom: 16px;
+            width: 450px;
+            height: 600px;
+            max-height: 80vh;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border: 1px solid #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        @media (max-width: 640px) {
+            .chat-window {
+                width: calc(100vw - 48px); /* Full width minus margins (24px left + 24px right) */
+                height: 70vh;
+                position: fixed; /* Fix to viewport on mobile */
+                bottom: 90px; /* Above the FAB */
+                right: 24px; /* Align with FAB */
+                margin-bottom: 0;
+            }
+        }
     </style>
 
     <!-- Floating Action Button -->
@@ -24,24 +52,7 @@
 
     <!-- Chat Window -->
     @if($isOpen)
-        <div 
-            style="
-                position: absolute; 
-                bottom: 100%; 
-                right: 0; 
-                margin-bottom: 16px; 
-                width: 450px; 
-                height: 600px; 
-                max-height: 80vh; 
-                background-color: white; 
-                border-radius: 0.5rem; 
-                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); 
-                border: 1px solid #e5e7eb; 
-                display: flex; 
-                flex-direction: column; 
-                overflow: hidden;
-            "
-        >
+        <div class="chat-window">
             <!-- Header -->
             <div class="bg-amber-500 p-4 flex items-center justify-between">
                 <h3 class="text-white font-semibold flex items-center gap-2">
