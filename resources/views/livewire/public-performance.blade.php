@@ -63,15 +63,25 @@
                         <tbody class="bg-white divide-y divide-gray-200">
                             @forelse($goal->indicators as $indicator)
                                 @php
-                                    $target = ($indicator->achievement->target_q1 ?? 0) + 
-                                              ($indicator->achievement->target_q2 ?? 0) + 
-                                              ($indicator->achievement->target_q3 ?? 0) + 
-                                              ($indicator->achievement->target_q4 ?? 0);
-                                    
-                                    $realization = ($indicator->achievement->achievement_q1 ?? 0) + 
-                                                   ($indicator->achievement->achievement_q2 ?? 0) + 
-                                                   ($indicator->achievement->achievement_q3 ?? 0) + 
-                                                   ($indicator->achievement->achievement_q4 ?? 0);
+                                    $ach = $indicator->achievement;
+                                    $target = 0;
+                                    $realization = 0;
+
+                                    if ($ach) {
+                                        if ($ach->achievement_q4 !== null) {
+                                            $target = $ach->target_q4;
+                                            $realization = $ach->achievement_q4;
+                                        } elseif ($ach->achievement_q3 !== null) {
+                                            $target = $ach->target_q3;
+                                            $realization = $ach->achievement_q3;
+                                        } elseif ($ach->achievement_q2 !== null) {
+                                            $target = $ach->target_q2;
+                                            $realization = $ach->achievement_q2;
+                                        } elseif ($ach->achievement_q1 !== null) {
+                                            $target = $ach->target_q1;
+                                            $realization = $ach->achievement_q1;
+                                        }
+                                    }
                                     
                                     $rawPercentage = $target > 0 ? ($realization / $target) * 100 : 0;
                                     $percentage = min($rawPercentage, 120);

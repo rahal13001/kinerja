@@ -43,7 +43,17 @@ class PublicPerformance extends Component
                 $achievement = $this->selectedIndicator->achievements->where('year', $year)->first();
                 
                 if ($achievement) {
-                    $realization = ($achievement->achievement_q1 ?? 0) + ($achievement->achievement_q2 ?? 0) + ($achievement->achievement_q3 ?? 0) + ($achievement->achievement_q4 ?? 0);
+                    if ($achievement->achievement_q4 !== null) {
+                        $realization = $achievement->achievement_q4;
+                    } elseif ($achievement->achievement_q3 !== null) {
+                        $realization = $achievement->achievement_q3;
+                    } elseif ($achievement->achievement_q2 !== null) {
+                        $realization = $achievement->achievement_q2;
+                    } elseif ($achievement->achievement_q1 !== null) {
+                        $realization = $achievement->achievement_q1;
+                    } else {
+                        $realization = 0;
+                    }
                 } else {
                     $realization = 0;
                 }
