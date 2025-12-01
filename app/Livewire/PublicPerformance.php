@@ -147,7 +147,7 @@ class PublicPerformance extends Component
 
         return view('livewire.public-performance', [
             'performanceGoals' => $performanceGoals,
-            'years' => range(date('Y') - 4, date('Y') + 1), // Last 5 years + next year
+            'years' => range(date('Y') - 4, date('Y')), // Last 5 years
         ])->layout('layouts.app');
     }
 }
