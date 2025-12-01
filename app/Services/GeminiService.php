@@ -27,7 +27,7 @@ class GeminiService
         If the answer is not in the data, politely say you don't have that information.
         Do not make up facts. Keep answers concise and friendly.
         
-        Performance Data (Current Year " . date('Y') . "):
+        Performance Data (Years " . (date('Y') - 4) . " - " . date('Y') . "):
         " . json_encode($context) . "
         
         User Question: " . $userMessage;
@@ -59,51 +59,48 @@ class GeminiService
 
     protected function getPerformanceContext()
     {
-        $year = date('Y');
+        $years = range(date('Y') - 4, date('Y'));
         
-        return PerformanceGoal::with(['indicators' => function($q) use ($year) {
-            $q->whereHas('achievements', function($sq) use ($year) {
-                $sq->where('year', $year);
-            })->with(['achievements' => function($sq) use ($year) {
-                $sq->where('year', $year);
-            }]);
+        return PerformanceGoal::with(['indicators.achievements' => function($q) use ($years) {
+            $q->whereIn('year', $years);
         }])->get()->map(function($goal) {
             return [
-                'goal' => $goal->goal, // Use original name for context simplicity, or add logic for masked if needed
+                'goal' => $goal->goal,
                 'indicators' => $goal->indicators->map(function($indicator) {
-                    $ach = $indicator->achievements->first();
-                    
-                    // Determine latest realization
-                    $realization = 0;
-                    $target = 0;
-                    $quarter = '';
-                    
-                    if ($ach) {
-                        if ($ach->achievement_q4 !== null) {
-                            $realization = $ach->achievement_q4;
-                            $target = $ach->target_q4;
-                            $quarter = 'Q4';
-                        } elseif ($ach->achievement_q3 !== null) {
-                            $realization = $ach->achievement_q3;
-                            $target = $ach->target_q3;
-                            $quarter = 'Q3';
-                        } elseif ($ach->achievement_q2 !== null) {
-                            $realization = $ach->achievement_q2;
-                            $target = $ach->target_q2;
-                            $quarter = 'Q2';
-                        } elseif ($ach->achievement_q1 !== null) {
-                            $realization = $ach->achievement_q1;
-                            $target = $ach->target_q1;
-                            $quarter = 'Q1';
-                        }
-                    }
-
                     return [
                         'name' => $indicator->name,
                         'unit' => $indicator->unit,
-                        'target' => $target,
-                        'realization' => $realization,
-                        'latest_quarter' => $quarter
+                        'achievements' => $indicator->achievements->map(function($ach) {
+                            // Determine latest realization for this specific year
+                            $realization = 0;
+                            $target = 0;
+                            $quarter = '';
+                            
+                            if ($ach->achievement_q4 !== null) {
+                                $realization = $ach->achievement_q4;
+                                $target = $ach->target_q4;
+                                $quarter = 'Q4';
+                            } elseif ($ach->achievement_q3 !== null) {
+                                $realization = $ach->achievement_q3;
+                                $target = $ach->target_q3;
+                                $quarter = 'Q3';
+                            } elseif ($ach->achievement_q2 !== null) {
+                                $realization = $ach->achievement_q2;
+                                $target = $ach->target_q2;
+                                $quarter = 'Q2';
+                            } elseif ($ach->achievement_q1 !== null) {
+                                $realization = $ach->achievement_q1;
+                                $target = $ach->target_q1;
+                                $quarter = 'Q1';
+                            }
+
+                            return [
+                                'year' => $ach->year,
+                                'target' => $target,
+                                'realization' => $realization,
+                                'latest_quarter' => $quarter
+                            ];
+                        })->values()
                     ];
                 })
             ];
