@@ -96,10 +96,10 @@
                                         {{ $indicator->unit }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-mono">
-                                        {{ number_format($target, 0, ',', '.') }}
+                                        {{ number_format($target, 2, ',', '.') }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-mono">
-                                        {{ number_format($realization, 0, ',', '.') }}
+                                        {{ number_format($realization, 2, ',', '.') }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right">
                                         @if($target > 0)
@@ -186,8 +186,8 @@
                                                 @foreach(['q1' => 'Triwulan I', 'q2' => 'Triwulan II', 'q3' => 'Triwulan III', 'q4' => 'Triwulan IV'] as $key => $label)
                                                     <tr>
                                                         <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ $label }}</td>
-                                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-right font-mono">{{ number_format($ach->{'target_'.$key} ?? 0, 0, ',', '.') }}</td>
-                                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-right font-mono">{{ number_format($ach->{'achievement_'.$key} ?? 0, 0, ',', '.') }}</td>
+                                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-right font-mono">{{ number_format($ach->{'target_'.$key} ?? 0, 2, ',', '.') }}</td>
+                                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-right font-mono">{{ number_format($ach->{'achievement_'.$key} ?? 0, 2, ',', '.') }}</td>
                                                         <td class="px-3 py-4 text-sm text-gray-500 text-left">{{ $ach->{'description_'.$key} ?? '-' }}</td>
                                                     </tr>
                                                 @endforeach
