@@ -26,6 +26,7 @@ class GeminiService
         Use the following performance data to answer the user's question. 
         If the answer is not in the data, politely say you don't have that information.
         Do not make up facts. Keep answers concise and friendly.
+        Format your response using Markdown. Use bold for key terms and bullet points for lists to make it easy to read.
         
         Performance Data (Years " . (date('Y') - 4) . " - " . date('Y') . "):
         " . json_encode($context) . "

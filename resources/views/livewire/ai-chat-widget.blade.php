@@ -1,4 +1,12 @@
 <div style="position: fixed; bottom: 24px; right: 24px; z-index: 9999;">
+    <style>
+        .chat-content ul { list-style-type: disc; margin-left: 1.5rem; margin-bottom: 0.5rem; }
+        .chat-content ol { list-style-type: decimal; margin-left: 1.5rem; margin-bottom: 0.5rem; }
+        .chat-content p { margin-bottom: 0.5rem; }
+        .chat-content p:last-child { margin-bottom: 0; }
+        .chat-content strong { font-weight: 600; }
+    </style>
+
     <!-- Floating Action Button -->
     <div>
         <button wire:click="toggleChat" class="bg-amber-500 hover:bg-amber-600 text-white rounded-full p-4 shadow-lg transition-transform transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500">
@@ -54,7 +62,9 @@
                 @foreach($messages as $msg)
                     <div class="flex {{ $msg['role'] === 'user' ? 'justify-end' : 'justify-start' }} mb-4">
                         <div class="max-w-[80%] rounded-lg px-4 py-3 text-sm {{ $msg['role'] === 'user' ? 'bg-amber-500 text-white rounded-br-none' : 'bg-white text-gray-800 border border-gray-200 rounded-bl-none shadow-sm' }}">
-                            {{ $msg['content'] }}
+                            <div class="chat-content {{ $msg['role'] === 'user' ? 'text-white' : 'text-gray-800' }}">
+                                {!! Str::markdown($msg['content']) !!}
+                            </div>
                         </div>
                     </div>
                 @endforeach
