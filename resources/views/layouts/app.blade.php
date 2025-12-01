@@ -59,5 +59,7 @@
             </div>
         </footer>
     </div>
+
+    @livewire('ai-chat-widget')
 </body>
 </html>
